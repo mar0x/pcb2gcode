@@ -28,7 +28,6 @@
 
 #include "geometry.hpp"
 
-extern "C" {
 #include <gerbv.h>
 
 // This depends on GERBV_INTERPOLATION_LINEARX10 not being the first item
@@ -36,7 +35,6 @@ extern "C" {
 #if COMPILE_VALUE_NEW_LINEARX10==0
 #      define GERBV_INTERPOLATION_LINEARx10 GERBV_INTERPOLATION_x10
 #endif
-}
 
 class gerber_exception: public std::exception {};
 

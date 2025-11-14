@@ -245,8 +245,8 @@ static set<size_t> findBridgeSegments(const linestring_type_fp& path, size_t num
     best_score = min_clique_distance(output, candidates, closest);
     bool improvement = false;
     auto new_score = best_score;
-    size_t swap_from;
-    size_t swap_to;
+    size_t swap_from = 0;
+    size_t swap_to = 0;
     for (const auto& candidate : candidates) {
       if (output.count(candidate.first) > 0) {
         // This is already in the output so we can't reuse it.

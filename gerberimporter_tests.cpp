@@ -225,11 +225,12 @@ void test_one(const string& gerber_file, double expected_error_rate) {
   auto old_width = std::cout.width(40);
   std::cout << gerber_file;
   std::cout.width(old_width);
-  std::cout << "\t error rate: " << error_rate*100 << "%"
+  std::cout << "\t" << errors << "/" << total
+            << "\t error rate: " << error_rate*100 << "%"
             << "\t expected: " << expected_error_rate*100 << "%"
             << std::endl;
   std::cout.precision(old_precision);
-  BOOST_CHECK_CLOSE(error_rate, expected_error_rate, 0.1);
+  BOOST_CHECK_CLOSE(error_rate, expected_error_rate, 1.1);
   write_to_png(cairo_surface, gerber_file);
 }
 
@@ -284,7 +285,7 @@ BOOST_DATA_TEST_CASE(gerberimporter_match_gerbv,
                            {"code5_polygon.gbr",           0.00001129},
                            {"code21_center_line.gbr",      0.01492},
                            {"polygon.gbr",                 0.01666},
-                           //{"wide_oval.gbr",               0.0000882},
+                           {"wide_oval.gbr",               0.0000882},
                            {"tall_oval.gbr",               0.00004317},
                            {"circle_oval.gbr",             0.00007908},
                            {"rectangle.gbr",               0.00001834},

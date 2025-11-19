@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - master
+      - ci-windows
     tags:
       - "v*"
   schedule:
@@ -323,13 +324,11 @@ jobs:
       if: matrix.os != 'ubuntu'
       env:
         VERBOSE: 1
-        SKIP_GERBERIMPORTER_TESTS_PNG: 1
       run: make -j ${NUM_CPUS} check || (cat test-suite.log && false)
     - name: Run unit tests with valgrind
       if: matrix.os == 'ubuntu'
       env:
         VERBOSE: 1
-        SKIP_GERBERIMPORTER_TESTS_PNG: 1
       run: make -j ${NUM_CPUS} check-valgrind || (cat mem-test-suite.log && false)
 
     - name: Run integration tests
@@ -361,6 +360,9 @@ jobs:
         if ls "${LOCAL_INSTALL_PATH}/lib/libgeos*" ]]; then
           cp -L "${LOCAL_INSTALL_PATH}/lib/libgeos*" pcb2gcode-$(./pcb2gcode --version | head -1)/.libs;
         fi
+
+        cp ./*.png pcb2gcode-$(./pcb2gcode --version | head -1)/ || true
+        cp ./*.log pcb2gcode-$(./pcb2gcode --version | head -1)/ || true
 
         cat > pcb2gcode-$(./pcb2gcode --version | head -1)/pcb2gcode.sh << EOF
         #!/bin/bash
@@ -438,6 +440,8 @@ jobs:
         cp /mingw64/bin/libzstd.dll .
         cp /mingw64/bin/zlib1.dll .
         popd
+        cp ../*.png . || true
+        cp ../*.log . || true
         popd
         tar cvf pcb2gcode-${{ steps.sanitize-key.outputs.key }}.tar pcb2gcode-$(./pcb2gcode --version | head -1)
       env:
